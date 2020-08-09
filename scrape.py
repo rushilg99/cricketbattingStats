@@ -27,6 +27,7 @@ def extract():
             for j in data.findAll('tr', attrs={'class':'data1'}):
                 info = (j.text.strip()).split("\n") # Gets player info as an array
                 link = j.find("a", attrs={"class":"data-link"}) # Gets the latter part of the link to the player page
+                # When I was simply using data that didn't require me to visit each player page, my code was relatively fast. Connecting to each page slows the program down considerably.
                 playerpage = requests.get("https://stats.espncricinfo.com" + str(link.get("href"))) # Connects to the individual player page
                 soup2 = BeautifulSoup(playerpage.content, 'lxml')
                 playerbatstyle = soup2.find("b", string="Batting style")
@@ -42,7 +43,7 @@ def extract():
                 # Now get the player's role in the team
                 playerRole = soup2.find("b", string="Playing role")
                 if playerRole != None:
-                    playerRole = playerRole.find_parent("p").find("span").text
+                    playerRole = playerRole.find_parent("p").find("span").text # Extracts part of the html stating the role of a cricketer (if the information exists)
                     info.append(playerRole.lower())
                 else:
                     info.append("")
