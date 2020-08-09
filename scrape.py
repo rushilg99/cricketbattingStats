@@ -29,16 +29,16 @@ def extract():
                 link = j.find("a", attrs={"class":"data-link"}) # Gets the latter part of the link to the player page
                 playerpage = requests.get("https://stats.espncricinfo.com" + str(link.get("href"))) # Connects to the individual player page
                 soup2 = BeautifulSoup(playerpage.content, 'lxml')
-                playerbatstyle = soup2.find('b', string="Batting style").find_parent("p").find("span").text # Finds out whether or not a player is left or right handed
-                try:
+                playerbatstyle = soup2.find("b", string="Batting style")
+                if playerbatstyle != None:
+                    playerbatstyle = playerbatstyle.find_parent("p").find("span").text # Finds out whether or not a player is left or right handed
                     lhrs = playerbatstyle.lower()
                     if lhrs.find("right") != -1:
-                        info.append("R")
+                       	info.append("R")
                     else:
                         info.append("L")
-                except IndexError:
-                    info.append("-")
-
+                else:
+                    info.append("")
                 # Now get the player's role in the team
                 playerRole = soup2.find("b", string="Playing role")
                 if playerRole != None:

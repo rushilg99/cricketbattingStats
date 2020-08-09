@@ -14,9 +14,6 @@ def edit():
         else:
             notout_yesno[i] = "No"
     dataset.insert(hsloc+1,"HS-N/O?",notout_yesno) #insert the new column after the high score column
-    '''(2) Remove incomplete records - handle this by only including players who have played the equivalent of 2 test match series' '''
-    dataset = dataset[(dataset["Mat"] >= 6)]
-    dataset = dataset[dataset["Ave"]!="-"]
-    '''(3) Rename column names'''
+    '''(2) Rename column names'''
     dataset = dataset.rename(columns={"100":"Hundreds", "50":"Fifties", "0":"Ducks"})
     dataset.to_csv("battingstats.csv", index=False)
